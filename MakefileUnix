@@ -1,0 +1,12 @@
+CC=gcc
+CFLAGS=-pipe -O3 -Iinclude -Wall -Wno-builtin-declaration-mismatch
+LIBS=-lSDL2 -lGL
+OUT=quick-cas
+COMP=$(CC) $(CFLAGS) -c $<
+LINK=$(CC) *.o -o $(OUT) $(LIBS)
+
+include build.mk
+
+clean:
+	rm *.o $(OUT)
+
