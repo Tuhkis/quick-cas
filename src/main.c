@@ -1,9 +1,13 @@
 #include <sdl2/SDL.h>
 #include <string.h>
 
+#include "GLOBAL.h"
 #include "renderer.h"
 #include "util.h"
 #include "str.h"
+
+static I32 ww = 55555;
+static I32 wh = 55555;
 
 static const char button_map[256] = {
 	[ SDL_BUTTON_LEFT   & 0xff ] =  MU_MOUSE_LEFT,
@@ -54,10 +58,9 @@ static void styleWindow(mu_Context* ctx) {
 static char b[4096];
 
 static void windowUi(mu_Context* ctx) {
-	if (mu_begin_window(ctx, "CAS", mu_rect(40, 40, 300, 450))) {
+	if (mu_begin_window_ex(ctx, "CAS", mu_rect(0, 0, ww, wh), MU_OPT_NOCLOSE | MU_OPT_NOTITLE)) {
 		mu_layout_row(ctx, 3, (int[]) {220, 60}, 0);
 
-		// mu_label(ctx, "Button:");
 		mu_textbox_ex(ctx, b, 4069, 0);
 		if (mu_button(ctx, "Submit")) {
 			char a[strLen(b)];
@@ -115,6 +118,11 @@ MAIN {
 					if (c && ev.type ==   SDL_KEYUP) { mu_input_keyup(ctx, c);   }
 					break;
 				}
+				case SDL_WINDOWEVENT_RESIZED:
+					rSetDims(ev.window.data1, ev.window.data2);
+					break;
+				default:
+					break;
 			}
 		}
 		// Render
@@ -133,6 +141,7 @@ MAIN {
 
 	} while (running == 1);
 
+	free(ctx);
 	return 0;
 }
 

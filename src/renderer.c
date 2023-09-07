@@ -6,9 +6,10 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
-#include <assert.h>
 #include "renderer.h"
 #include "atlas.inl"
+#include "GLOBAL.h"
+#include "util.h"
 
 #define BUFFER_SIZE 16384
 
@@ -17,18 +18,22 @@ static GLfloat  vert_buf[BUFFER_SIZE *  8];
 static GLubyte color_buf[BUFFER_SIZE * 16];
 static GLuint  index_buf[BUFFER_SIZE *  6];
 
-static int width  = 800;
-static int height = 600;
+static int width  = WIDTH;
+static int height = HEIGHT;
 static int buf_idx;
 
 static SDL_Window *window;
 
+void rSetDims(int w, int h) {
+	width = w;
+	height = h;
+}
 
 void r_init(void) {
   /* init SDL window */
   window = SDL_CreateWindow(
-    NULL, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-    width, height, SDL_WINDOW_OPENGL);
+    "Quick CAS", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+    width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
   SDL_GL_CreateContext(window);
 
   /* init gl */
@@ -50,7 +55,7 @@ void r_init(void) {
     GL_ALPHA, GL_UNSIGNED_BYTE, atlas_texture);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  assert(glGetError() == 0);
+  ASSERT(glGetError() == 0);
 }
 
 
