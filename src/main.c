@@ -6,8 +6,8 @@
 #include "util.h"
 #include "str.h"
 
-static I32 ww = 55555;
-static I32 wh = 55555;
+static I32 ww = WIDTH;
+static I32 wh = HEIGHT;
 
 static const char button_map[256] = {
 	[ SDL_BUTTON_LEFT   & 0xff ] =  MU_MOUSE_LEFT,
@@ -59,15 +59,18 @@ static char b[4096];
 
 static void windowUi(mu_Context* ctx) {
 	if (mu_begin_window_ex(ctx, "CAS", mu_rect(0, 0, ww, wh), MU_OPT_NOCLOSE | MU_OPT_NOTITLE)) {
-		mu_layout_row(ctx, 3, (int[]) {220, 60}, 0);
+		mu_layout_row(ctx, 1, (int[]) {ww - 10}, 0);
 
 		mu_textbox_ex(ctx, b, 4069, 0);
-		if (mu_button(ctx, "Submit")) {
+		mu_layout_row(ctx, 2, (int[]) {(ww-10)/2-2, (ww-10)/2-2}, 0);
+		if (mu_button(ctx, "Solve")) {
 			char a[strLen(b)];
 			strcpy(a, b);
 			PRINTF("%s\n", b);
 			for (U16 i = 0; i < strLen(b); ++i)
 				b[i] = 0;
+		}
+		if (mu_button(ctx, "Calculate")) {
 		}
 		mu_end_window(ctx);
 	}
@@ -119,7 +122,9 @@ MAIN {
 					break;
 				}
 				case SDL_WINDOWEVENT_RESIZED:
-					rSetDims(ev.window.data1, ev.window.data2);
+					ww = ev.window.data1;
+					wh = ev.window.data2;
+					rSetDims(ww, wh);
 					break;
 				default:
 					break;

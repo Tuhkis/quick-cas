@@ -32,15 +32,15 @@
 #warning Unknown OS.
 #endif
 
+#include <stdio.h>
 #ifdef OS_WINDOWS
 #define WIN32_LEAN_AND_MEAN
 #include "windows.h"
-void printf_s(const char *fmt, ...);
+// void printf_s(const char *fmt, ...);
 #define PRINTF(fmt, ...) printf_s(fmt)
 #define MAIN int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 #else
 #define MAIN int main(int argc, char **argv)
-void printf(const char *fmt, ...);
 #define PRINTF(fmt, ...) printf(fmt)
 #endif /* OS_WINDOWS */
 
@@ -68,6 +68,7 @@ typedef struct frac {
 	I32 a, b;
 } Frac;
 
+#define FRAC(x, y) ((Frac) {x, y})
 #define FRAC2FLOAT(f) ((F32)(f.a) / (F32)(f.b))
 
 F32 sq_root(U32 x);

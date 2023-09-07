@@ -1,7 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#define WIDTH (880)
-#define HEIGHT (620)
+#define WIDTH (700)
+#define HEIGHT (600)
 
 #endif // GLOBAL_H

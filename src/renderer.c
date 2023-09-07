@@ -25,15 +25,24 @@ static int buf_idx;
 static SDL_Window *window;
 
 void rSetDims(int w, int h) {
+	if(h<=0) h=1;
 	width = w;
 	height = h;
+
+	glViewport(0,0,(GLsizei)w,(GLsizei)h);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }
 
 void r_init(void) {
   /* init SDL window */
   window = SDL_CreateWindow(
     "Quick CAS", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-    width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    width, height, SDL_WINDOW_OPENGL /*| SDL_WINDOW_RESIZABLE*/ );
   SDL_GL_CreateContext(window);
 
   /* init gl */
